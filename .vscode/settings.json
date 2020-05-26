@@ -1,0 +1,16 @@
+{
+  "files.exclude": {
+    "**/dist": true,
+    "**/node_modules": true,
+    "**/yarn.lock": true,
+    "**/.cache": true,
+    "**/public": true
+  },
+  "editor.formatOnSave": true,
+  "workbench.iconTheme": "vscode-icons",
+  "search.exclude": {
+    "dist/**": true,
+    "public/**": true,
+    "node_modules/**": true
+  }
+}
