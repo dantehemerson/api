@@ -1,15 +1,24 @@
 import { buildSchema } from 'graphql'
 
 export const schema = buildSchema(`
-  type Query {
+  type GithubStatus  {
     status: String
-    workingOn: String
-    contributions: String
+    bio: String
+    company: String
+    contributions: Int
+  }
+
+  type Query {
+    githubStatus: GithubStatus
   }
 `)
 
+export interface GithubStatus {
+  status: string
+  bio: string
+  company: string
+  contributions: number
+}
 export interface Schema {
-  status: () => Promise<string>
-  workingOn: () => Promise<string>
-  contributions: () => Promise<string>
+  githubStatus: () => Promise<GithubStatus>
 }

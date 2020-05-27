@@ -1,13 +1,8 @@
+import { GithubAPI } from './github-api'
 import { Schema } from './schema'
 
+const githubAPI = new GithubAPI()
+
 export const root: Schema = {
-  status: async () => {
-    return 'alksjl'
-  },
-  contributions: async () => {
-    return '3600 contributions the last year'
-  },
-  workingOn: async () => {
-    return '@dantecalderon'
-  }
+  githubStatus: async () => githubAPI.getGithubStatus()
 }
