@@ -3,6 +3,7 @@ import { buildSchema } from 'graphql'
 export const schema = buildSchema(`
   type GithubStatus  {
     status: String
+    updatedAt: String
     bio: String
     company: String
     contributions: Int
@@ -22,6 +23,7 @@ export const schema = buildSchema(`
 
 export interface GithubStatus {
   status: string
+  updatedAt: string
   bio: string
   company: string
   contributions: number

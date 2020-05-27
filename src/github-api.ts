@@ -43,6 +43,7 @@ export class GithubAPI {
           company
           status {
             emoji
+            updatedAt
             message
           }
         }
@@ -53,6 +54,7 @@ export class GithubAPI {
 
     return {
       status: `${emoji.get(get('viewer.status.emoji'))} ${get('viewer.status.message')}`,
+      updatedAt: get('viewer.status.updatedAt'),
       bio: get('viewer.bio', 'A dreamer'),
       company: get('viewer.company'),
       contributions: get('viewer.contributionsCollection.contributionCalendar.totalContributions')
