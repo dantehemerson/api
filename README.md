@@ -1,27 +1,15 @@
-# tsc-simple-starter
+# 🐙 dantecalderon API
 
-Typescript Basic Template 
+My GraphQL API
 
-# Use
+It contains information about my Github Status, Bio, etc.
 
-```
-git clone https://github.com/dantehemerson/tsc-simple-starter.git --depth=1 <project-name>
-```
-
-The move to your project
+### Install and Run
 
 ```
-cd <project-name>
+yarn
 ```
 
-and remove repo
-
 ```
-rm -rf .git
-```
-
-and start yours
-
-```
-git init
+yarn dev
 ```
