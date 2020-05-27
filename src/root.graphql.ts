@@ -4,5 +4,6 @@ import { Schema } from './schema'
 const githubAPI = new GithubAPI()
 
 export const root: Schema = {
-  githubStatus: async () => githubAPI.getGithubStatus()
+  githubStatus: async () => githubAPI.getGithubStatus(),
+  latestCommit: async () => githubAPI.getLatestCommit()
 }

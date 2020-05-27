@@ -8,8 +8,15 @@ export const schema = buildSchema(`
     contributions: Int
   }
 
+  type LatestCommit {
+    message: String
+    createdAt: String
+    url: String
+  }
+
   type Query {
     githubStatus: GithubStatus
+    latestCommit: LatestCommit
   }
 `)
 
@@ -19,6 +26,13 @@ export interface GithubStatus {
   company: string
   contributions: number
 }
+
+export interface LatestCommit {
+  message: string
+  createdAt: string
+  url: string
+}
 export interface Schema {
   githubStatus: () => Promise<GithubStatus>
+  latestCommit: () => Promise<LatestCommit>
 }
