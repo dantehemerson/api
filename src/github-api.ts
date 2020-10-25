@@ -74,12 +74,10 @@ export class GithubAPI {
         return Boolean(latestCommit)
       })
 
-      if (!latestCommit) return null
-
       return {
-        message: latestCommit.message.trim().split('\n')[0].trim(),
-        createdAt: latestPushEvent.created_at,
-        url: `https://github.com/${latestPushEvent.repo.name}/commit/${latestCommit.sha}`
+        message: latestCommit ? latestCommit.message.trim().split('\n')[0].trim() : 'feat: Hack complete',
+        createdAt: latestCommit ? latestPushEvent.created_at : new Date().toISOString(),
+        url: latestCommit ? `https://github.com/${latestPushEvent.repo.name}/commit/${latestCommit.sha}` : 'https://github.com/dantehemerson'
       }
     } catch {
       return null
