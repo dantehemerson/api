@@ -1,17 +1,18 @@
-import cors from 'cors'
-import express, { Application } from 'express'
-import graphqlHTTP from 'express-graphql'
+import cors from 'fastify-cors'
+import  fastify, { FastifyInstance } from 'fastify'
+import mercurius from 'mercurius'
+import helmet from 'fastify-helmet'
 import { config } from './config'
 import { Logger } from './logger'
 import { root } from './root.graphql'
 import { schema } from './schema'
 
 export class App {
-  private readonly app: Application
+  private readonly app: FastifyInstance
   private readonly logger: Logger
 
   constructor() {
-    this.app = express()
+    this.app = fastify({ logger: true})
     this.logger = new Logger()
 
     this.setupMiddlewares()
@@ -19,18 +20,18 @@ export class App {
   }
 
   private setupGraphQL() {
-    this.app.use(
-      '/graphql',
-      graphqlHTTP({
+    this.app.register(
+      mercurius, 
+      {
         schema,
-        rootValue: root,
-        graphiql: true
+        graphiql: true,
+        resolvers: root as any
       })
-    )
   }
 
   private setupMiddlewares() {
-    this.app.use(cors())
+    this.app.register(cors)
+    this.app.register(helmet)
   }
 
   init() {
