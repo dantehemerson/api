@@ -1,5 +1,5 @@
 import cors from 'fastify-cors'
-import  fastify, { FastifyInstance } from 'fastify'
+import fastify, { FastifyInstance } from 'fastify'
 import mercurius from 'mercurius-temp-dante'
 import helmet from 'fastify-helmet'
 import { config } from './config'
@@ -12,7 +12,7 @@ export class App {
   private readonly logger: Logger
 
   constructor() {
-    this.app = fastify({ logger: true})
+    this.app = fastify({ logger: true })
     this.logger = new Logger()
 
     this.setupMiddlewares()
@@ -20,18 +20,18 @@ export class App {
   }
 
   private setupGraphQL() {
-    this.app.register(
-      mercurius, 
-      {
-        schema,
-        graphiql: true,
-        resolvers: root as any
-      })
+    this.app.register(mercurius, {
+      schema,
+      graphiql: true,
+      resolvers: root as any
+    })
   }
 
   private setupMiddlewares() {
     this.app.register(cors)
-    this.app.register(helmet)
+    this.app.register(helmet, {
+      contentSecurityPolicy: false
+    })
   }
 
   async init() {
@@ -40,7 +40,7 @@ export class App {
       const address = this.app.server.address()
       const port = typeof address === 'string' ? address : address?.port
       this.logger.info(`Go to http://localhost:${port}`)
-    } catch(error) {
+    } catch (error) {
       this.app.log.error(error)
       process.exit(1)
     }

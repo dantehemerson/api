@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node dist/index.js",
     "start:dev": "nodemon",
-    "format": "prettier",
+    "format": "prettier --write \"src/**/*.ts\"",
     "build": "tsc",
     "test": "jest"
   },

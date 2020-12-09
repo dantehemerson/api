@@ -51,7 +51,7 @@ export class GithubAPI {
     `)
 
     const get = getWithState(body)
-console.log('AHO', get('viewer.status.emoji'), emoji.get(get('viewer.status.emoji')))
+    console.log('AHO', get('viewer.status.emoji'), emoji.get(get('viewer.status.emoji')))
 
     return {
       status: `${emoji.get(get('viewer.status.emoji'))} ${get('viewer.status.message')}`,
@@ -78,7 +78,9 @@ console.log('AHO', get('viewer.status.emoji'), emoji.get(get('viewer.status.emoj
       return {
         message: latestCommit ? latestCommit.message.trim().split('\n')[0].trim() : 'feat: Hack complete',
         createdAt: latestCommit ? latestPushEvent.created_at : new Date().toISOString(),
-        url: latestCommit ? `https://github.com/${latestPushEvent.repo.name}/commit/${latestCommit.sha}` : 'https://github.com/dantehemerson'
+        url: latestCommit
+          ? `https://github.com/${latestPushEvent.repo.name}/commit/${latestCommit.sha}`
+          : 'https://github.com/dantehemerson'
       }
     } catch {
       return null
