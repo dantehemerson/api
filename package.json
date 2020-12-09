@@ -33,9 +33,9 @@
     "fastify": "^3.9.1",
     "fastify-cors": "^5.0.0",
     "fastify-helmet": "^5.0.3",
-    "graphql": "^15.0.0",
+    "graphql": "^15.4.0",
     "lodash.get": "^4.4.2",
-    "mercurius": "^6.5.0",
+    "mercurius-temp-dante": "^6.5.0",
     "node-emoji-new": "^3.4.5",
     "winston": "^3.2.1"
   }

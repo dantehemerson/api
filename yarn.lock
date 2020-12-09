@@ -2025,10 +2025,10 @@ graphql-jit@^0.4.0:
     lodash.merge "4.6.2"
     lodash.mergewith "4.6.2"
 
-graphql@^15.0.0:
-  version "15.0.0"
-  resolved "https://registry.yarnpkg.com/graphql/-/graphql-15.0.0.tgz#042a5eb5e2506a2e2111ce41eb446a8e570b8be9"
-  integrity sha512-ZyVO1xIF9F+4cxfkdhOJINM+51B06Friuv4M66W7HzUOeFd+vNzUn4vtswYINPi6sysjf1M2Ri/rwZALqgwbaQ==
+graphql@^15.4.0:
+  version "15.4.0"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-15.4.0.tgz#e459dea1150da5a106486ba7276518b5295a4347"
+  integrity sha512-EB3zgGchcabbsU9cFe1j+yxdzKQKAbGUWRb13DsrsMN1yyfmmIq+2+L5MqVWcDCE4V89R5AyUOi7sMOGxdsYtA==
 
 growly@^1.3.0:
   version "1.3.0"
@@ -3183,10 +3183,10 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-mercurius@^6.5.0:
+mercurius-temp-dante@^6.5.0:
   version "6.5.0"
-  resolved "https://registry.yarnpkg.com/mercurius/-/mercurius-6.5.0.tgz#ab3dd35b8b4c8822eaac1e27d0539a149568921f"
-  integrity sha512-xOUhNez0XX7Yg7a+91AJ43iH4zvuYsfecjq1qDazDuR1HXJsmk4BfJ2u4hVd0q/7B8ZbvVK77cqI6cMPxdYiJw==
+  resolved "https://registry.yarnpkg.com/mercurius-temp-dante/-/mercurius-temp-dante-6.5.0.tgz#6131b5e0766ecf517fff5323e80e0cda243f66b5"
+  integrity sha512-jO4Sb5ttroLEMqMmo+M/o7wd1Odb/b4R8BbCxygFJoWyXYFm9OEeeYfKDj+RKafa93UrT8qCd+yEBNlA50cIJA==
   dependencies:
     end-of-stream "^1.4.4"
     events.on "^1.0.1"
@@ -3194,7 +3194,7 @@ mercurius@^6.5.0:
     fastify-plugin "^2.0.1"
     fastify-static "^3.0.0"
     fastify-websocket "^2.0.5"
-    graphql "^15.0.0"
+    graphql "^15.4.0"
     graphql-jit "^0.4.0"
     mqemitter "^4.0.0"
     p-map "^4.0.0"
