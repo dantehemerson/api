@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios'
 import { config } from './config'
 import { getWithState } from './utils'
-import emoji from 'node-emoji'
+import emoji from 'node-emoji-new'
 import { GithubStatus, LatestCommit } from './schema'
 
 export class GithubAPI {
@@ -51,6 +51,7 @@ export class GithubAPI {
     `)
 
     const get = getWithState(body)
+console.log('AHO', get('viewer.status.emoji'), emoji.get(get('viewer.status.emoji')))
 
     return {
       status: `${emoji.get(get('viewer.status.emoji'))} ${get('viewer.status.message')}`,
