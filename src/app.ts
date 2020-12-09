@@ -36,7 +36,7 @@ export class App {
 
   async init() {
     try {
-      await this.app.listen(config.port)
+      await this.app.listen(config.port, '0.0.0.0')
       const address = this.app.server.address()
       const port = typeof address === 'string' ? address : address?.port
       this.logger.info(`Go to http://localhost:${port}`)
