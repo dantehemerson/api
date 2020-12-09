@@ -34,9 +34,15 @@ export class App {
     this.app.register(helmet)
   }
 
-  init() {
-    this.app.listen(config.port, () => {
-      this.logger.info(`Go to http://localhost:${config.port}`)
-    })
+  async init() {
+    try {
+      await this.app.listen(config.port)
+      const address = this.app.server.address()
+      const port = typeof address === 'string' ? address : address?.port
+      this.logger.info(`Go to http://localhost:${port}`)
+    } catch(error) {
+      this.app.log.error(error)
+      process.exit(1)
+    }
   }
 }
