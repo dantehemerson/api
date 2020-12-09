@@ -1,11 +1,14 @@
 import { GithubAPI } from './github-api'
+import { LastFMAPI } from './last-fm.api'
 import { Schema } from './schema'
 
 const githubAPI = new GithubAPI()
+const lastFMAPI = new LastFMAPI()
 
 export const root: { Query: Schema } = {
   Query: {
-    githubStatus: async () => githubAPI.getGithubStatus(),
-    latestCommit: async () => githubAPI.getLatestCommit()
-  }
+    githubStatus: () => githubAPI.getGithubStatus(),
+    latestCommit: () => githubAPI.getLatestCommit(),
+    listening: () => lastFMAPI.getSongListening(),
+  },
 }

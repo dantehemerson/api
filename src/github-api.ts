@@ -12,8 +12,8 @@ export class GithubAPI {
       url: `https://api.github.com/graphql`,
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${config.githubToken}`
-      }
+        Authorization: `Bearer ${config.github.token}`,
+      },
     }
   }
 
@@ -21,8 +21,8 @@ export class GithubAPI {
     const response = await axios({
       ...this.baseGQLRequestConfig,
       data: {
-        query: gqlQuery
-      }
+        query: gqlQuery,
+      },
     })
 
     const json = response.data
@@ -58,14 +58,14 @@ export class GithubAPI {
       updatedAt: get('viewer.status.updatedAt'),
       bio: get('viewer.bio', 'A dreamer'),
       company: get('viewer.company'),
-      contributions: get('viewer.contributionsCollection.contributionCalendar.totalContributions')
+      contributions: get('viewer.contributionsCollection.contributionCalendar.totalContributions'),
     }
   }
 
   async getLatestCommit(): Promise<LatestCommit> {
     try {
       const data = await axios
-        .get(`https://api.github.com/users/${config.githubUsername}/events/public`)
+        .get(`https://api.github.com/users/${config.github.username}/events/public`)
         .then(response => response.data)
 
       let latestCommit
@@ -80,7 +80,7 @@ export class GithubAPI {
         createdAt: latestCommit ? latestPushEvent.created_at : new Date().toISOString(),
         url: latestCommit
           ? `https://github.com/${latestPushEvent.repo.name}/commit/${latestCommit.sha}`
-          : 'https://github.com/dantehemerson'
+          : `https://github.com/${config.github.username}`,
       }
     } catch {
       return null

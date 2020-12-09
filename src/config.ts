@@ -1,7 +1,17 @@
 require('dotenv').config()
 
 export const config = {
-  githubToken: process.env.GITHUB_TOKEN,
   port: process.env.PORT || 3000,
-  githubUsername: process.env.GITHUB_USERNAME || 'dantehemerson'
+
+  /** Github */
+  github: {
+    username: process.env.GITHUB_USERNAME,
+    token: process.env.GITHUB_TOKEN,
+  },
+
+  /** LastFM */
+  lastFM: {
+    username: process.env.LASTFM_USERNAME,
+    apiKey: process.env.LASTFM_API_KEY,
+  },
 }

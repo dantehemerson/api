@@ -23,14 +23,14 @@ export class App {
     this.app.register(mercurius, {
       schema,
       graphiql: true,
-      resolvers: root as any
+      resolvers: root as any,
     })
   }
 
   private setupMiddlewares() {
     this.app.register(cors)
     this.app.register(helmet, {
-      contentSecurityPolicy: false
+      contentSecurityPolicy: false,
     })
   }
 

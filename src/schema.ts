@@ -15,9 +15,20 @@ export const schema = buildSchema(`
     url: String
   }
 
+  type LastSong {
+    name: String
+    artist: String
+    album: String
+    url: String
+    image: String
+    playing: Boolean
+    scrobbles: String
+  }
+
   type Query {
     githubStatus: GithubStatus
     latestCommit: LatestCommit
+    listening: LastSong
   }
 `)
 
@@ -34,7 +45,19 @@ export interface LatestCommit {
   createdAt: string
   url: string
 }
+
+export interface LastSong {
+  name: string
+  artist: string
+  album: string
+  url: string
+  image: string
+  playing: boolean
+  scrobbles: string
+}
+
 export interface Schema {
   githubStatus: () => Promise<GithubStatus>
   latestCommit: () => Promise<LatestCommit>
+  listening: () => Promise<LastSong | null>
 }
