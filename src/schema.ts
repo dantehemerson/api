@@ -23,6 +23,7 @@ export const schema = buildSchema(`
     image: String
     playing: Boolean
     scrobbles: String
+    lastPlayingDate: String
   }
 
   type Query {
@@ -54,6 +55,7 @@ export interface LastSong {
   image: string
   playing: boolean
   scrobbles: string
+  lastPlayingDate: string
 }
 
 export interface Schema {

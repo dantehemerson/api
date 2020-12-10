@@ -34,11 +34,14 @@ export class LastFMAPI {
         axios.get(this.getTrackURL),
         axios.get(this.getScrobblesURL),
       ])
+      // console.log("Dante ~ file: last-fm.api.ts ~ line 37 ~ LastFMAPI ~ getSongListening ~ getTrackResult", JSON.stringify(getTrackResult.data, null, 3))
 
       const track = getTrackResult.data['recenttracks']['track']
+      // console.log("Dante ~ file: last-fm.api.ts ~ line 40 ~ LastFMAPI ~ getSongListening ~ track", track)
       const scrobbles = getScrobblesResult.data['user']['playcount']
       console.log('Los scrobbles son', scrobbles, typeof scrobbles)
       const playing = track[0]['@attr'] !== undefined
+      const lastPlayingDate = new Date(parseInt(track?.[0]?.date?.uts, 10) * 1000 || Date())
 
       return {
         name: track[0]['name'],
@@ -48,6 +51,7 @@ export class LastFMAPI {
         image: track[0]['image'][3]['#text'],
         playing,
         scrobbles,
+        lastPlayingDate: lastPlayingDate.toISOString(),
       }
     } catch (error) {
       this.logger.error('Error on get data', error)
