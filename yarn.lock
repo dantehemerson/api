@@ -3183,10 +3183,10 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-mercurius-temp-dante@^6.5.0:
-  version "6.5.0"
-  resolved "https://registry.yarnpkg.com/mercurius-temp-dante/-/mercurius-temp-dante-6.5.0.tgz#6131b5e0766ecf517fff5323e80e0cda243f66b5"
-  integrity sha512-jO4Sb5ttroLEMqMmo+M/o7wd1Odb/b4R8BbCxygFJoWyXYFm9OEeeYfKDj+RKafa93UrT8qCd+yEBNlA50cIJA==
+mercurius@^6.9.0:
+  version "6.9.0"
+  resolved "https://registry.yarnpkg.com/mercurius/-/mercurius-6.9.0.tgz#3290ba65e0500237ae7c746127be9f7c608ad63f"
+  integrity sha512-6preT2aButM3lSucZLg1Eoh0Ue7yqQwAVUcbKdX1qdEdpJy4vzGpFeHIqwtGI31IMxe+9H+viGHudhIJ8WNTaQ==
   dependencies:
     end-of-stream "^1.4.4"
     events.on "^1.0.1"

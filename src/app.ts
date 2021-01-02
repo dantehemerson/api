@@ -1,6 +1,6 @@
 import cors from 'fastify-cors'
 import fastify, { FastifyInstance } from 'fastify'
-import mercurius from 'mercurius-temp-dante'
+import mercurius from 'mercurius'
 import helmet from 'fastify-helmet'
 import { config } from './config'
 import { Logger } from './logger'
