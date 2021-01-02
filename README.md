@@ -2,14 +2,25 @@
 
 My GraphQL API
 
-It contains information about my Github Status, Bio, etc.
+💡 It provides information about my:
 
-### Install and Run
+* Github Status (Github API)
+* Contributions in last year(Github API)
+* Latest commit(Github API)
+* Listening(Last.fm API)
+
+### 🚀 Install and Run
 
 ```
 yarn
 ```
 
+then 
+
 ```
 yarn dev
 ```
+
+### ⚖️ License
+
+[MIT](./LICENSE)
