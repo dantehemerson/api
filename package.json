@@ -27,7 +27,7 @@
     "preset": "ts-jest"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "comma-number": "^2.0.1",
     "dotenv": "^8.2.0",
     "fastify": "^3.9.1",
