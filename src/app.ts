@@ -4,8 +4,8 @@ import mercurius from 'mercurius'
 import helmet from 'fastify-helmet'
 import { config } from './config'
 import { Logger } from './logger'
-import { root } from './root.graphql'
-import { schema } from './schema'
+import { root } from './graphql/root.graphql'
+import { schema } from './graphql/schema'
 
 export class App {
   private readonly app: FastifyInstance

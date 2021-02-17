@@ -1,10 +1,10 @@
 import axios, { AxiosRequestConfig } from 'axios'
-import { config } from './config'
-import { getWithState } from './utils'
+import { config } from '../../config'
+import { getWithState } from '../../utils'
 import emoji from 'node-emoji-new'
-import { GithubStatus, LatestCommit } from './schema'
+import { GithubStatus, LatestCommit } from '../../graphql/schema'
 
-export class GithubAPI {
+export class GithubApiService {
   private baseGQLRequestConfig: AxiosRequestConfig
 
   constructor() {

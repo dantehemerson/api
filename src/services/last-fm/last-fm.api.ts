@@ -1,10 +1,10 @@
 import axios from 'axios'
 import qs from 'querystring'
-import { config } from './config'
-import { Logger } from './logger'
-import { LastSong } from './schema'
+import { config } from '../../config'
+import { Logger } from '../../logger'
+import { LastSong } from '../../graphql/schema'
 
-export class LastFMAPI {
+export class LastFMApiService {
   private readonly baseURL = 'http://ws.audioscrobbler.com/2.0'
   private readonly logger: Logger
   private readonly getTrackURL: string
