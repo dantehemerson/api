@@ -26,10 +26,17 @@ export const schema = buildSchema(`
     lastPlayingDate: String
   }
 
+  type Reading {
+    title: String,
+    updatedAt: String,
+    url: String
+  }
+
   type Query {
     githubStatus: GithubStatus
     latestCommit: LatestCommit
     listening: LastSong
+    reading: Reading
   }
 `)
 
@@ -58,8 +65,15 @@ export interface LastSong {
   lastPlayingDate: string
 }
 
+export interface Reading {
+  title: string,
+  updatedAt: string,
+  url: string
+}
+
 export interface Schema {
   githubStatus: () => Promise<GithubStatus>
   latestCommit: () => Promise<LatestCommit>
   listening: () => Promise<LastSong | null>
+  reading: () => Promise<Reading>
 }
