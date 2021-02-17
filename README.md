@@ -8,6 +8,7 @@ My GraphQL API
 * Contributions in last year(Github API)
 * Latest commit(Github API)
 * Listening(Last.fm API)
+* Goodreads - Reading Status
 
 ### 🚀 Install and Run
 
