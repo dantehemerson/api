@@ -29,7 +29,8 @@ export const schema = buildSchema(`
   type Reading {
     title: String,
     updatedAt: String,
-    url: String
+    url: String,
+    profileUrl: String
   }
 
   type Query {
@@ -69,6 +70,7 @@ export interface Reading {
   title: string,
   updatedAt: string,
   url: string
+  profileUrl: string
 }
 
 export interface Schema {

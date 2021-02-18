@@ -16,14 +16,18 @@ export class GoodreadsApiService {
         `https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.goodreads.com%2Fuser_status%2Flist%2F72837965-dante-calder-n%3Fformat%3Drss`,
       )
 
-      return this.parseStatus(response.data.items)
+      return {
+        ...this.parseStatus(response.data.items),
+        profileUrl: `https://www.goodreads.com/user/show/72837965-dante-calder-n`
+      }
     } catch (error) {
       console.error(error)
       /** Return default status */
       return {
         title: 'Atomic Habits',
         updatedAt: new Date().toISOString(),
-        url: 'https://www.goodreads.com/user/show/72837965-dante-calder-n'
+        url: 'https://www.goodreads.com/user/show/72837965-dante-calder-n',
+        profileUrl: 'https://www.goodreads.com/user/show/72837965-dante-calder-n'
       }
     }
   }
