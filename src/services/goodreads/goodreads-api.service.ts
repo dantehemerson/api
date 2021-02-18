@@ -1,7 +1,9 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
+import axios, { AxiosInstance } from 'axios'
+import {parseStringPromise} from "xml2js"
 
 export class GoodreadsApiService {
   private axiosInstance: AxiosInstance
+  private readonly userId = '72837965-dante-calder-n'
 
   constructor() {
     this.axiosInstance = axios.create()
@@ -13,12 +15,14 @@ export class GoodreadsApiService {
   async lastReading() {
     try {
       const response = await this.axiosInstance.get(
-        `https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.goodreads.com%2Fuser_status%2Flist%2F72837965-dante-calder-n%3Fformat%3Drss`,
+        `https://www.goodreads.com/user_status/list/${this.userId}?format=rss`,
       )
 
+      const { rss } = await parseStringPromise(response.data, { explicitArray: false });
+
       return {
-        ...this.parseStatus(response.data.items),
-        profileUrl: `https://www.goodreads.com/user/show/72837965-dante-calder-n`
+        ...this.parseStatus(rss.channel.item),
+        profileUrl: `https://www.goodreads.com/user/show/${this.userId}`
       }
     } catch (error) {
       console.error(error)
