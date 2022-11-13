@@ -13,13 +13,7 @@ My GraphQL API
 ### 🚀 Install and Run
 
 ```
-yarn
-```
-
-then 
-
-```
-yarn dev
+npm ci
 ```
 
 ### ⚖️ License
