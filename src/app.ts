@@ -15,6 +15,7 @@ export class App {
     this.app = fastify({ logger: true })
     this.logger = new Logger()
 
+    this.setupHealth()
     this.setupMiddlewares()
     this.setupGraphQL()
   }
@@ -24,6 +25,17 @@ export class App {
       schema,
       graphiql: true,
       resolvers: root as any,
+    })
+  }
+
+  private setupHealth() {
+    this.app.get('/health', (_, response) => {
+      response.send({
+        status: 'ok',
+        uptime: process.uptime(),
+        memory: process.memoryUsage(),
+        timestamp: Date.now(),
+      })
     })
   }
 
