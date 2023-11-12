@@ -18,6 +18,6 @@ export const root: { Query: Schema } = {
       cacheManager.cachedReponse('latestCommit', () => githubAPI.getLatestCommit(), 2),
     listening: () => cacheManager.cachedReponse('listening', () => lastFMAPI.getSongListening(), 60 * 60),
     reading: () =>
-      cacheManager.cachedReponse('reading', () => goodReadsApiService.lastReading(), 2
+      cacheManager.cachedReponse('reading', () => goodReadsApiService.lastReading(), 2)
   },
 }
