@@ -1,7 +1,7 @@
 require('dotenv').config()
 
 export const config = {
-  port: process.env.PORT || 3000,
+  port: parseInt(process.env.PORT) || 3000,
 
   /** Github */
   github: {

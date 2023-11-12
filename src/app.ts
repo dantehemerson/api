@@ -1,7 +1,7 @@
-import cors from 'fastify-cors'
+import cors from '@fastify/cors'
 import fastify, { FastifyInstance } from 'fastify'
 import mercurius from 'mercurius'
-import helmet from 'fastify-helmet'
+import helmet from '@fastify/helmet'
 import { config } from './config'
 import { Logger } from './logger'
 import { root } from './graphql/root.graphql'
@@ -48,7 +48,10 @@ export class App {
 
   async init() {
     try {
-      await this.app.listen(config.port, '0.0.0.0')
+      await this.app.listen({
+        port: config.port,
+        host: '0.0.0.0'
+      });
       const address = this.app.server.address()
       const port = typeof address === 'string' ? address : address?.port
       this.logger.info(`Go to http://localhost:${port}`)

@@ -34,10 +34,8 @@ export class LastFMApiService {
         axios.get(this.getTrackURL),
         axios.get(this.getScrobblesURL),
       ])
-      // console.log("Dante ~ file: last-fm.api.ts ~ line 37 ~ LastFMAPI ~ getSongListening ~ getTrackResult", JSON.stringify(getTrackResult.data, null, 3))
 
       const track = getTrackResult.data['recenttracks']['track']
-      // console.log("Dante ~ file: last-fm.api.ts ~ line 40 ~ LastFMAPI ~ getSongListening ~ track", track)
       const scrobbles = getScrobblesResult.data['user']['playcount']
       console.log('Los scrobbles son', scrobbles, typeof scrobbles)
       const playing = track[0]['@attr'] !== undefined
