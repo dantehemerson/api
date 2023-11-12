@@ -5,7 +5,7 @@
   "author": "Dante Calderon<mail@dantecalderon.dev>",
   "license": "MIT",
   "scripts": {
-    "start": "bun dist/index.js",
+    "start": "node dist/index.js",
     "start:dev": "nodemon",
     "format": "prettier --write \"src/**/*.ts\"",
     "build": "npm run tsc",
