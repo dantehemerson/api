@@ -8,8 +8,9 @@
     "start": "bun dist/index.js",
     "start:dev": "nodemon",
     "format": "prettier --write \"src/**/*.ts\"",
-    "build": "bun run tsc",
-    "test": "jest"
+    "build": "tsc",
+    "test": "jest",
+    "tsc": "tsc"
   },
   "devDependencies": {
     "@types/jest": "^29.5.8",
@@ -21,8 +22,7 @@
     "prettier": "^3.0.3",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.1",
-    "tslint": "^6.1.0",
-    "typescript": "^5.2.2"
+    "tslint": "^6.1.0"
   },
   "jest": {
     "preset": "ts-jest"
@@ -41,6 +41,7 @@
     "node-cache": "^5.1.2",
     "node-emoji-new": "^3.4.5",
     "querystring": "^0.2.0",
+    "typescript": "^5.2.2",
     "winston": "^3.11.0",
     "xml2js": "^0.6.2"
   }
