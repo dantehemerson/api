@@ -8,7 +8,7 @@
     "start": "bun dist/index.js",
     "start:dev": "nodemon",
     "format": "prettier --write \"src/**/*.ts\"",
-    "build": "tsc",
+    "build": "npm run tsc",
     "test": "jest",
     "tsc": "tsc"
   },
