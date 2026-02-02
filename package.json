@@ -33,7 +33,7 @@
     "axios": "^1.6.1",
     "comma-number": "^2.0.1",
     "dotenv": "^16.3.1",
-    "fastify": "^4.24.3",
+    "fastify": "^5.7.3",
     "fastify-helmet": "^7.1.0",
     "graphql": "^16.8.1",
     "lodash.get": "^4.4.2",
