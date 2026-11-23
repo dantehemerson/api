@@ -55,6 +55,18 @@ Env vars: `USAGE_DB_PATH`, `OPENCODE_USAGE_API_KEY`,
 and `USAGE_READ_CACHE_TTL` (seconds). The sync pairs are public Cloudflare
 Access application identifiers, one per collector — see `.env.example`.
 
+#### ⚠️ Required setup: Cloudflare Access in front of `/graphql`
+
+The mutations above are **implemented and tested**, but they need a Cloudflare
+Access application on `api.dantecalderon.com` path `/graphql` before the
+collectors can upload. Without it, no `cf-access-jwt-assertion` header ever
+arrives and the mutations fail closed with
+`Collector authentication is not configured`.
+
+See **[docs/cloudflare-access-setup.md](docs/cloudflare-access-setup.md)** for
+the full walkthrough: the two-layer authentication model, the dashboard steps,
+and how to verify it.
+
 ### Checks and production
 
 ```sh
