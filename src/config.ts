@@ -1,7 +1,9 @@
-require('dotenv').config()
+import { config as loadEnv } from 'dotenv'
+
+loadEnv({ quiet: true })
 
 export const config = {
-  port: parseInt(process.env.PORT) || 3000,
+  port: Number.parseInt(process.env.PORT ?? '3000', 10),
 
   /** Github */
   github: {

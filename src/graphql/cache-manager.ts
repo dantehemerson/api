@@ -9,11 +9,16 @@ export class CacheManager {
     this.cache = new NodeCache()
   }
 
-  async cachedReponse(key: string, method: any, ttl: number) {
-    if (this.cache.has(key)) {
+  close() {
+    this.cache.close()
+  }
+
+  async cachedResponse<T>(key: string, method: () => Promise<T>, ttl: number): Promise<T> {
+    const cached = this.cache.get<T>(key)
+    if (cached !== undefined) {
       this.logger.info(`Cache hit for key ${key}, returning cached value`)
 
-      return this.cache.get(key)
+      return cached
     }
 
     this.logger.info(`Cache miss for key ${key}, calling method and caching result`)

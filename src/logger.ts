@@ -15,7 +15,7 @@ export class Logger {
     this.logger.info(`[${this.context}] > ${message}`)
   }
 
-  error(message: string, trace?: any) {
+  error(message: string, trace?: unknown) {
     this.logger.error(`[${this.context}] > ${message}`, trace)
   }
 

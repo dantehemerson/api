@@ -43,9 +43,9 @@ export const schema = buildSchema(`
 
 export interface GithubStatus {
   status: string
-  updatedAt: string
+  updatedAt: string | null
   bio: string
-  company: string
+  company: string | null
   contributions: number
 }
 
@@ -67,15 +67,15 @@ export interface LastSong {
 }
 
 export interface Reading {
-  title: string,
-  updatedAt: string,
+  title: string
+  updatedAt: string
   url: string
   profileUrl: string
 }
 
 export interface Schema {
   githubStatus: () => Promise<GithubStatus>
-  latestCommit: () => Promise<LatestCommit>
+  latestCommit: () => Promise<LatestCommit | null>
   listening: () => Promise<LastSong | null>
   reading: () => Promise<Reading>
 }

@@ -1,8 +1,27 @@
 import axios, { AxiosRequestConfig } from 'axios'
 import { config } from '../../config'
-import { getWithState } from '../../utils'
-import emoji from 'node-emoji-new'
+import { get as getEmoji } from 'node-emoji'
 import { GithubStatus, LatestCommit } from '../../graphql/schema'
+
+interface Viewer {
+  bio: string | null
+  company: string | null
+  status: { emoji: string | null; updatedAt: string; message: string | null } | null
+  contributionsCollection: { contributionCalendar: { totalContributions: number } }
+}
+
+interface Commit {
+  message: string
+  sha: string
+  author?: { name: string }
+}
+
+interface GithubEvent {
+  type: string
+  created_at: string
+  repo: { name: string }
+  payload: { commits?: Commit[] }
+}
 
 export class GithubApiService {
   private baseGQLRequestConfig: AxiosRequestConfig
@@ -11,6 +30,7 @@ export class GithubApiService {
     this.baseGQLRequestConfig = {
       url: `https://api.github.com/graphql`,
       method: 'POST',
+      timeout: 10_000,
       headers: {
         Authorization: `Bearer ${config.github.token}`,
       },
@@ -18,7 +38,7 @@ export class GithubApiService {
   }
 
   private async query(gqlQuery: string) {
-    const response = await axios({
+    const response = await axios<{ data?: { viewer: Viewer }; errors?: { message: string }[] }>({
       ...this.baseGQLRequestConfig,
       data: {
         query: gqlQuery,
@@ -26,6 +46,10 @@ export class GithubApiService {
     })
 
     const json = response.data
+
+    if (json.errors?.length || !json.data) {
+      throw new Error(json.errors?.map(error => error.message).join('; ') || 'Missing GitHub data')
+    }
 
     return json.data
   }
@@ -50,37 +74,41 @@ export class GithubApiService {
       }
     `)
 
-    const get = getWithState(body)
-    console.log('AHO', get('viewer.status.emoji'), emoji.get(get('viewer.status.emoji')))
+    const { viewer } = body
+    const emoji = viewer.status?.emoji
+    const statusEmoji = emoji ? (getEmoji(emoji) ?? emoji) : ''
 
     return {
-      status: `${emoji.get(get('viewer.status.emoji'))} ${get('viewer.status.message')}`,
-      updatedAt: get('viewer.status.updatedAt'),
-      bio: get('viewer.bio', 'A dreamer'),
-      company: get('viewer.company'),
-      contributions: get('viewer.contributionsCollection.contributionCalendar.totalContributions'),
+      status: [statusEmoji, viewer.status?.message].filter(Boolean).join(' '),
+      updatedAt: viewer.status?.updatedAt ?? null,
+      bio: viewer.bio ?? 'A dreamer',
+      company: viewer.company,
+      contributions: viewer.contributionsCollection.contributionCalendar.totalContributions,
     }
   }
 
-  async getLatestCommit(): Promise<LatestCommit> {
+  async getLatestCommit(): Promise<LatestCommit | null> {
     try {
       const data = await axios
-        .get(`https://api.github.com/users/${config.github.username}/events/public`)
+        .get<GithubEvent[]>(`https://api.github.com/users/${config.github.username}/events/public`, {
+          timeout: 10_000,
+        })
         .then(response => response.data)
 
-      let latestCommit
+      let latestCommit: Commit | undefined
       const latestPushEvent = data.find(event => {
         if (event.type !== 'PushEvent') return false
-        latestCommit = event.payload.commits.reverse().find(commit => commit.author)
+        latestCommit = event.payload.commits?.findLast(commit => commit.author)
         return Boolean(latestCommit)
       })
 
       return {
         message: latestCommit ? latestCommit.message.trim().split('\n')[0].trim() : 'feat: Hack complete',
-        createdAt: latestCommit ? latestPushEvent.created_at : new Date().toISOString(),
-        url: latestCommit
-          ? `https://github.com/${latestPushEvent.repo.name}/commit/${latestCommit.sha}`
-          : `https://github.com/${config.github.username}`,
+        createdAt: latestCommit && latestPushEvent ? latestPushEvent.created_at : new Date().toISOString(),
+        url:
+          latestCommit && latestPushEvent
+            ? `https://github.com/${latestPushEvent.repo.name}/commit/${latestCommit.sha}`
+            : `https://github.com/${config.github.username}`,
       }
     } catch {
       return null

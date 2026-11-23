@@ -1,11 +1,10 @@
 import axios from 'axios'
-import qs from 'querystring'
 import { config } from '../../config'
 import { Logger } from '../../logger'
 import { LastSong } from '../../graphql/schema'
 
 export class LastFMApiService {
-  private readonly baseURL = 'http://ws.audioscrobbler.com/2.0'
+  private readonly baseURL = 'https://ws.audioscrobbler.com/2.0/'
   private readonly logger: Logger
   private readonly getTrackURL: string
   private readonly getScrobblesURL: string
@@ -24,29 +23,39 @@ export class LastFMApiService {
     })
   }
 
-  private buildURL(queryOptions: qs.ParsedUrlQuery): string {
-    return `${this.baseURL}/?${qs.stringify({ ...queryOptions, api_key: config.lastFM.apiKey, format: 'json' })}`
+  private buildURL(queryOptions: Record<string, string | undefined>): string {
+    const url = new URL(this.baseURL)
+    for (const [key, value] of Object.entries({
+      ...queryOptions,
+      api_key: config.lastFM.apiKey,
+      format: 'json',
+    })) {
+      url.searchParams.set(key, value ?? '')
+    }
+    return url.href
   }
 
   async getSongListening(): Promise<LastSong | null> {
     try {
       const [getTrackResult, getScrobblesResult] = await Promise.all([
-        axios.get(this.getTrackURL),
-        axios.get(this.getScrobblesURL),
+        axios.get(this.getTrackURL, { timeout: 10_000 }),
+        axios.get(this.getScrobblesURL, { timeout: 10_000 }),
       ])
 
-      const track = getTrackResult.data['recenttracks']['track']
+      const tracks = getTrackResult.data.recenttracks?.track
+      const track = Array.isArray(tracks) ? tracks[0] : tracks
+      if (!track) return null
       const scrobbles = getScrobblesResult.data['user']['playcount']
-      console.log('Los scrobbles son', scrobbles, typeof scrobbles)
-      const playing = track[0]['@attr'] !== undefined
-      const lastPlayingDate = new Date(parseInt(track?.[0]?.date?.uts, 10) * 1000 || Date())
+      const playing = track['@attr']?.nowplaying === 'true'
+      const timestamp = Number.parseInt(track.date?.uts, 10) * 1000
+      const lastPlayingDate = new Date(Number.isFinite(timestamp) ? timestamp : Date.now())
 
       return {
-        name: track[0]['name'],
-        artist: track[0]['artist']['#text'],
-        album: track[0]['album']['#text'],
-        url: track[0]['url'],
-        image: track[0]['image'][3]['#text'],
+        name: track.name,
+        artist: track.artist['#text'],
+        album: track.album['#text'],
+        url: track.url,
+        image: track.image?.[3]?.['#text'] ?? '',
         playing,
         scrobbles,
         lastPlayingDate: lastPlayingDate.toISOString(),

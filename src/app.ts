@@ -1,18 +1,19 @@
 import cors from '@fastify/cors'
-import fastify, { FastifyInstance } from 'fastify'
+import fastify, { FastifyInstance, FastifyServerOptions } from 'fastify'
 import mercurius from 'mercurius'
 import helmet from '@fastify/helmet'
 import { config } from './config'
 import { Logger } from './logger'
-import { root } from './graphql/root.graphql'
+import { createRoot } from './graphql/root.graphql'
+import { CacheManager } from './graphql/cache-manager'
 import { schema } from './graphql/schema'
 
 export class App {
-  private readonly app: FastifyInstance
+  readonly app: FastifyInstance
   private readonly logger: Logger
 
-  constructor() {
-    this.app = fastify({ logger: true })
+  constructor(options: FastifyServerOptions = {}) {
+    this.app = fastify({ logger: true, ...options })
     this.logger = new Logger()
 
     this.setupHealth()
@@ -21,10 +22,12 @@ export class App {
   }
 
   private setupGraphQL() {
+    const cache = new CacheManager()
+    this.app.addHook('onClose', async () => cache.close())
     this.app.register(mercurius, {
       schema,
       graphiql: true,
-      resolvers: root as any,
+      resolvers: createRoot(cache),
     })
   }
 
@@ -50,14 +53,14 @@ export class App {
     try {
       await this.app.listen({
         port: config.port,
-        host: '0.0.0.0'
-      });
+        host: '0.0.0.0',
+      })
       const address = this.app.server.address()
       const port = typeof address === 'string' ? address : address?.port
       this.logger.info(`Go to http://localhost:${port}`)
     } catch (error) {
       this.app.log.error(error)
-      process.exit(1)
+      throw error
     }
   }
 }

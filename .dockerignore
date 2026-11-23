@@ -6,5 +6,3 @@ dist
 LICENSE
 README.md
 Dockerfile
-nodemon.json
-tslint.json

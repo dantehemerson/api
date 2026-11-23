@@ -4,20 +4,17 @@ import { Schema } from './schema'
 import { GoodreadsApiService } from '../services/goodreads/goodreads-api.service'
 import { CacheManager } from './cache-manager'
 
-const cacheManager = new CacheManager()
+export function createRoot(cacheManager: CacheManager) {
+  const githubAPI = new GithubApiService()
+  const lastFMAPI = new LastFMApiService()
+  const goodReadsApiService = new GoodreadsApiService()
 
-const githubAPI = new GithubApiService()
-const lastFMAPI = new LastFMApiService()
-const goodReadsApiService = new GoodreadsApiService()
-
-export const root: { Query: Schema } = {
-  Query: {
-    githubStatus: () =>
-      cacheManager.cachedReponse('githubStatus', () => githubAPI.getGithubStatus(), 2),
-    latestCommit: () =>
-      cacheManager.cachedReponse('latestCommit', () => githubAPI.getLatestCommit(), 2),
-    listening: () => cacheManager.cachedReponse('listening', () => lastFMAPI.getSongListening(), 60 * 60),
-    reading: () =>
-      cacheManager.cachedReponse('reading', () => goodReadsApiService.lastReading(), 2)
-  },
+  return {
+    Query: {
+      githubStatus: () => cacheManager.cachedResponse('githubStatus', () => githubAPI.getGithubStatus(), 2),
+      latestCommit: () => cacheManager.cachedResponse('latestCommit', () => githubAPI.getLatestCommit(), 2),
+      listening: () => cacheManager.cachedResponse('listening', () => lastFMAPI.getSongListening(), 60 * 60),
+      reading: () => cacheManager.cachedResponse('reading', () => goodReadsApiService.lastReading(), 2),
+    },
+  } satisfies { Query: Schema }
 }
