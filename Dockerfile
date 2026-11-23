@@ -22,6 +22,10 @@ RUN npm ci --omit=dev
 
 COPY --from=builder /app/dist ./dist
 
+# Usage snapshots live in SQLite under /app/data; the non-root user must own it.
+RUN mkdir -p /app/data && chown node:node /app/data
+VOLUME /app/data
+
 EXPOSE 3000
 
 USER node

@@ -13,6 +13,11 @@ export class CacheManager {
     this.cache.close()
   }
 
+  invalidate(key: string): void {
+    this.logger.info(`Invalidating cache for key ${key}`)
+    this.cache.del(key)
+  }
+
   async cachedResponse<T>(key: string, method: () => Promise<T>, ttl: number): Promise<T> {
     const cached = this.cache.get<T>(key)
     if (cached !== undefined) {

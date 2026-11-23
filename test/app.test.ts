@@ -1,10 +1,11 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
 import { App } from '../src/app'
+import { UsageStore } from '../src/usage/usage-store'
 import { mockUpstream, readingRSS, track, viewer } from './helpers'
 
 test('Fastify 5 serves health with security headers', async t => {
-  const { app } = new App({ logger: false })
+  const { app } = new App({ logger: false }, { store: new UsageStore(':memory:') })
   t.after(() => app.close())
   const response = await app.inject({ method: 'GET', url: '/health' })
   assert.equal(response.statusCode, 200)
@@ -14,7 +15,7 @@ test('Fastify 5 serves health with security headers', async t => {
 })
 
 test('CORS preflight allows GraphQL requests', async t => {
-  const { app } = new App({ logger: false })
+  const { app } = new App({ logger: false }, { store: new UsageStore(':memory:') })
   t.after(() => app.close())
   const response = await app.inject({
     method: 'OPTIONS',
@@ -49,7 +50,7 @@ test('Mercurius executes all resolvers with GraphQL 17 and caches upstream respo
     if (url.includes('goodreads.com')) return readingRSS
     throw new Error(`Unexpected URL: ${url}`)
   })
-  const { app } = new App({ logger: false })
+  const { app } = new App({ logger: false }, { store: new UsageStore(':memory:') })
   t.after(() => app.close())
   const request = {
     method: 'POST' as const,
@@ -82,7 +83,7 @@ test('Mercurius executes all resolvers with GraphQL 17 and caches upstream respo
 })
 
 test('GraphQL rejects unknown fields', async t => {
-  const { app } = new App({ logger: false })
+  const { app } = new App({ logger: false }, { store: new UsageStore(':memory:') })
   t.after(() => app.close())
   const response = await app.inject({
     method: 'POST',
@@ -94,7 +95,7 @@ test('GraphQL rejects unknown fields', async t => {
 })
 
 test('GraphiQL remains accessible', async t => {
-  const { app } = new App({ logger: false })
+  const { app } = new App({ logger: false }, { store: new UsageStore(':memory:') })
   t.after(() => app.close())
   const response = await app.inject({ method: 'GET', url: '/graphiql' })
   assert.equal(response.statusCode, 200)
