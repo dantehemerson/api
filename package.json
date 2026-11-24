@@ -10,6 +10,7 @@
   "scripts": {
     "start": "node dist/index.js",
     "start:dev": "tsx watch src/index.ts",
+    "token:generate": "tsx scripts/generate-collector-token.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "build": "npm run tsc",

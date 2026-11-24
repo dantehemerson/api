@@ -32,10 +32,41 @@ The API owns the dashboard usage data:
 * `machines` — latest Tailscale machines snapshot (`stale: true` past 15 minutes)
 * `opencodeUsage` — live proxy of the OpenCode Go usage meters, cached 60s
 * `uploadChatgptUsage` / `uploadMachines` — collector mutations. They require a
-  Cloudflare Access **service token** in the `cf-access-jwt-assertion` header;
-  each mutation verifies its own Access application (audience + client id from
-  `CHATGPT_USAGE_SYNC_*` / `MACHINES_SYNC_*`), rejects human logins, and fails
-  closed if the pair is not configured. Queries stay public.
+  collector API token in the `Authorization: Bearer` header; each token is
+  bound to exactly one mutation, so the ChatGPT token cannot write a machines
+  snapshot and vice versa. Queries stay public.
+
+#### Collector authentication
+
+Two schemes are supported. The API token is the primary one and needs no
+Cloudflare configuration.
+
+**API tokens (primary).** A token is an opaque random string. The API stores
+only its SHA-256 hash, so a leaked environment does not grant write access, and
+the comparison is constant-time. Generate a token with:
+
+```sh
+mise exec -- npm run token:generate -- chatgpt
+```
+
+It prints two values: the plaintext token, which goes in the collector's
+private config, and the hash, which goes in `CHATGPT_USAGE_TOKEN_HASH` or
+`MACHINES_USAGE_TOKEN_HASH`. The plaintext is shown once and cannot be
+recovered from the hash. See
+[docs/collector-api-tokens.md](docs/collector-api-tokens.md).
+
+**Cloudflare Access service tokens (fallback).** If an Access application
+covers this host, the Cloudflare Access service-token exchange is also
+accepted: the collector sends `CF-Access-Client-Id` /
+`CF-Access-Client-Secret`, Cloudflare validates them and injects a signed
+`cf-access-jwt-assertion`, and the API verifies that assertion's signature,
+audience, client id and service-token type. Human logins are rejected and
+both schemes fail closed. See
+[docs/cloudflare-access-setup.md](docs/cloudflare-access-setup.md).
+
+A request carrying an `Authorization` header is always treated as API-token
+authentication, so a malformed bearer token is rejected outright rather than
+falling through to the Access path.
 
 Snapshots are validated exactly like the previous dash Worker (version, plan,
 meter windows, machine key sets, upload freshness within 10/15 minutes) and are
@@ -50,10 +81,12 @@ stores it. Back it up with the host; in Docker the path is the `/app/data`
 volume declared in the Dockerfile.
 
 Env vars: `USAGE_DB_PATH`, `OPENCODE_USAGE_API_KEY`,
+`CHATGPT_USAGE_TOKEN_HASH`, `MACHINES_USAGE_TOKEN_HASH`,
 `CHATGPT_USAGE_SYNC_AUD`, `CHATGPT_USAGE_SYNC_CLIENT_ID`, `MACHINES_SYNC_AUD`,
 `MACHINES_SYNC_CLIENT_ID`, plus the optional TTLs `OPENCODE_USAGE_CACHE_TTL`
-and `USAGE_READ_CACHE_TTL` (seconds). The sync pairs are public Cloudflare
-Access application identifiers, one per collector — see `.env.example`.
+and `USAGE_READ_CACHE_TTL` (seconds). The token hashes are the API-token
+scheme; the sync pairs are public Cloudflare Access application identifiers
+for the fallback. See `.env.example`.
 
 #### ⚠️ Required setup: Cloudflare Access in front of `/graphql`
 

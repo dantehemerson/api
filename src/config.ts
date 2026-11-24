@@ -34,6 +34,14 @@ export const config = {
       audience: process.env.MACHINES_SYNC_AUD,
       clientId: process.env.MACHINES_SYNC_CLIENT_ID,
     },
+    /**
+     * First-party collector API tokens. Only the SHA-256 hash of each token is
+     * stored here; the plaintext lives solely in the collector's private
+     * config. Generate a token with `generateApiToken()` and store
+     * `hashApiToken(token)` in these variables.
+     */
+    chatgptTokenHash: process.env.CHATGPT_USAGE_TOKEN_HASH,
+    machinesTokenHash: process.env.MACHINES_USAGE_TOKEN_HASH,
     opencodeCacheTtl: secondsFromEnv(process.env.OPENCODE_USAGE_CACHE_TTL, 60),
     readCacheTtl: secondsFromEnv(process.env.USAGE_READ_CACHE_TTL, 30),
   },
