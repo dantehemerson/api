@@ -1,8 +1,16 @@
 # Cloudflare Access setup for the usage mutations
 
+> **Note:** collector uploads are now primarily authenticated with **first-party
+> API tokens**, which need no Cloudflare configuration. See
+> [collector-api-tokens.md](collector-api-tokens.md). This document covers the
+> Cloudflare Access path, which remains available as a fallback.
+>
+> Follow the API-token route unless you specifically want the Access service
+> tokens to keep working.
+
 The `uploadChatgptUsage` and `uploadMachines` mutations are already
 authenticated. This document explains **how**, and the one Cloudflare
-configuration step that is still missing.
+configuration step that is still missing if you use the Access path.
 
 ## TL;DR
 
